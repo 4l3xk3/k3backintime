@@ -47,6 +47,6 @@ apt-cache policy $debfile
 #reinstall
 	echo "reinstall packet $debfile from $inst_ver to $dest_ver"
 	echo "apt install $debfile=$dest_ver"
-	apt install -y $debfile=$dest_ver
+	apt install -y --allow-downgrades $debfile=$dest_ver
 done
 apt -f -y install
