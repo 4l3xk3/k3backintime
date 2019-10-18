@@ -112,6 +112,8 @@ apt-cache policy $debfile
 
 done
 echo "" >> $INST_CMD
+echo "apt install --reinstall libgost-astra" >> $INST_CMD
+echo "apt -f install" >> $INST_CMD
 chmod 755 $INST_CMD
 echo "to rollback packages now run: $INST_CMD" 
 #sh $INST_CMD
