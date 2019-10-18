@@ -2,6 +2,23 @@
 
 #Program for uninstall unsuccesfull upgrades for Astra, Debian and Ubuntu based systems
 #apt-show-versions
+# Author: Alexey Kovin <4l3xk3@gmail.com>
+# All rights reserved
+# Russia, Electrostal, 2019
+
+# Localization
+# ------------
+function echo_en () {
+    if [ x"$LANG" != "xru_RU.UTF-8" ]; then
+        echo "$1"
+    fi
+}
+
+function echo_ru () {
+    if [ x"$LANG" = "xru_RU.UTF-8" ]; then
+        echo "$1"
+    fi
+}
 
 #if [ x"$1" == "x" ] ;then
 #    echo "Error.."
