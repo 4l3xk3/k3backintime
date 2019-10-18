@@ -1,29 +1,74 @@
 #!/bin/bash
 
-#AstraLinux SE 1.6, AstraLinux CE 2.12 update uninstaller.
-#Author: Alexey Kovin 4l3xk3@gmail.com
-#All rights reserved
-#Russia, Electrostal, 2019
+#Program for uninstall unsuccesfull upgrades for Astra, Debian and Ubuntu based systems
+#apt-show-versions
+
+#if [ x"$1" == "x" ] ;then
+#    echo "Error.."
+#    echo "Usage: ./k3backintime <num_of_days>"
+#    exit 1
+#fi
+#NUM_DAYS=$1
+#NUM_DAYS=9999
 
 export LANG=C
-UPLIST="/tmp/up.list"
-VER_LIST="/tmp/ver.list"
-find /var/lib/dpkg/info/ -name \*.list -mtime -3 | sed 's#.list$##;s#.*/##' | sed 's/:.*//' > $UPLIST
+UPLIST="/tmp/time_up.list"
+VER_LIST="/tmp/time_ver.list"
+INST_CMD="/tmp/time_install.cmd"
+ERR_LOG="/tmp/time_err.log"
+date > $ERR_LOG 
+echo "apt install -y --allow-downgrades \\" > $INST_CMD
+
+src_num=`cat /etc/apt/sources.list | grep "^deb" | wc -l`
+
+if [ $src_num -ne 2 ] ;then
+	echo "error: You must set 2 repositories in sources list: original and update"
+	echo "for example stable and tesing"
+	echo "repositories in sources.list now = $src_num"
+	exit 1
+fi
+
+#apt update
+#if [ $? ] ;then
+#	"error: Can't connect to repositoties"
+#	exit 1
+#fi 
+
+
+#find /var/lib/dpkg/info/ -name \*.list -mtime -${NUM_DAYS} | sed 's#.list$##;s#.*/##' > $UPLIST
+#| sed 's/:.*//' > $UPLIST
+
+find /var/lib/dpkg/info/ -name \*.list | sed 's#.list$##;s#.*/##' > $UPLIST
+
 for debfile in `cat $UPLIST` ; do
 	echo "processing $debfile .."
 apt-cache policy $debfile 
 	inst_ver=`apt-cache policy $debfile | grep Installed | awk -F" " '{print $2}'`
 	echo "installed = $debfile $inst_ver"
 #check
-	apt-cache show $debfile | grep Version > $VER_LIST
+	apt-cache show $debfile | grep "^Version" > $VER_LIST
 	numlines=`wc -l $VER_LIST | cut -f1 -d" "`
 	echo "numlines = $numlines"
 	if [ $numlines -lt 2 ] ;then
-	    echo "error: too few sources"
+	    echo "------------" >> $ERR_LOG
+	    echo "deb=$debfile" >> $ERR_LOG
+	    echo "error: too few sources" >> $ERR_LOG
+	    cat $VER_LIST >> $ERR_LOG
+	    echo "-----" >> $ERR_LOG
+	    apt-cache policy $debfile >> $ERR_LOG
+	    echo "-----" >> $ERR_LOG
+	    echo "------------" >> $ERR_LOG
 	    continue
 	fi
 	if [ $numlines -gt 2 ] ;then
-	    echo "error: too many sources"
+	    echo "------------" >> $ERR_LOG
+	    echo "deb=$debfile" >> $ERR_LOG
+	    echo "error: too many sources" >> $ERR_LOG
+	    cat $VER_LIST >> $ERR_LOG
+	    echo "-----" >> $ERR_LOG
+	    apt-cache policy $debfile >> $ERR_LOG
+	    echo "-----" >> $ERR_LOG
+	    echo "------------" >> $ERR_LOG
 	    continue
 	fi
 
@@ -44,9 +89,14 @@ apt-cache policy $debfile
 	    dest_ver=$ver2
 	fi
 
-#reinstall
-	echo "reinstall packet $debfile from $inst_ver to $dest_ver"
-	echo "apt install $debfile=$dest_ver"
-	apt install -y --allow-downgrades $debfile=$dest_ver
+#create reinstall command with list 
+	echo "********* reinstall packet $debfile from $inst_ver to $dest_ver"
+	echo "$debfile=$dest_ver \\" >> $INST_CMD
+
 done
-apt -f -y install
+echo "" >> $INST_CMD
+chmod 755 $INST_CMD
+echo "to rollback packages now run: $INST_CMD" 
+#sh $INST_CMD
+#apt -f -y install
+
