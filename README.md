@@ -21,7 +21,8 @@ for example stable and testing repository, or stable and sid
 
 Minsk SE Edition:
 
-if devel disk used on system, you must connect 2 devel disks too
+if devel disk used on system, you must connect 2 devel disks:
+
 original devel disk and devel disk from update
 
 Author: Alexey Kovin <4l3xk3@gmail.com>
