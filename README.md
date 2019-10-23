@@ -20,10 +20,13 @@ repository used before updates and repository used for updates
 for example stable and testing repository, or stable and sid
 
 Minsk SE Edition:
+You must connect original disk and update disk
 
-if devel disk used on system, you must connect 2 devel disks:
+
+If devel disk used on system, you must connect also 2 devel disks:
 
 original devel disk and devel disk from update
+
 
 Author: Alexey Kovin <4l3xk3@gmail.com>
 
