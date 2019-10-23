@@ -2,6 +2,8 @@ RU
 
 Программа для отката установленных обновлений для AstraLinux, Debian, Ubuntu
 
+Программа сама ничего не откатывает а создает файл сценарий по которому будет предложен пользователю сценарий отката.
+
 в /etc/apt/sources.list должны быть подключены 2 источника: 
 
 репозиторий который использовался до обновлений и репозиторий с которого были установлены обновления (например stable и testing, или stable и sid)
@@ -13,6 +15,8 @@ RU
 EN
 
 Program for uninstall unsuccesfull upgrades for Astra, Debian and Ubuntu based systems
+
+Program doesn't do any uninstall by itself, but only creates script which when run ask user to check and agree with changes.
 
 in /etc/apt/sources.list must be connected 2 sources:
 
