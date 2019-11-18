@@ -32,7 +32,10 @@ If devel disk used on system, you must connect also 2 devel disks:
 original devel disk and devel disk from update
 
 
-Author: Alexey Kovin <4l3xk3@gmail.com>
+Author: 
+
+Alexey Kovin <4l3xk3@gmail.com>
+Alexey Kovin <akovin@astralinux.ru>
 
 All rights reserved
 
