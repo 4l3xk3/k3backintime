@@ -35,6 +35,7 @@ original devel disk and devel disk from update
 Author: 
 
 Alexey Kovin <4l3xk3@gmail.com>
+
 Alexey Kovin <akovin@astralinux.ru>
 
 All rights reserved
